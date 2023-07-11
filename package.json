@@ -1,0 +1,32 @@
+{
+  "name": "@locustjs/test",
+  "version": "1.0.0",
+  "description": "This library provides a simple test runner.",
+  "main": "index.cjs.js",
+  "module": "index.esm.js",
+  "scripts": {
+    "build": "babel index.esm.js -o index.cjs.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ironcodev/locustjs-test.git"
+  },
+  "keywords": [
+    "locustjs",
+    "test runner"
+  ],
+  "author": "Iron Code",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ironcodev/locustjs-test/issues"
+  },
+  "homepage": "https://github.com/ironcodev/locustjs-test#readme",
+  "dependencies": {
+    "@locustjs/base": "^2.1.0",
+    "@locustjs/exception": "^2.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.6",
+    "@babel/core": "^7.22.8"
+  }
+}
