@@ -383,7 +383,9 @@ class TestRunner {
     for (let r of this.results) {
       time += r.time;
     }
-    const text = 'Finished.' + '\n' + (this.failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this.failed} tests failed` : '0 tests failed' + ConsoleColors.Modifier.Reset) + ', ' + (this.passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this.passed} tests passed` : '0 tests passed' + ConsoleColors.Modifier.Reset) + '\n' + `Tests: ${this.passed + this.failed}` + '\n' + `Time: ${time / 1000} sec` + '\n';
+    const text = 'Finished.' + '\n' + (this.failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this.failed} tests failed` : '0 tests failed') + ConsoleColors.Modifier.Reset;
+    ', ' + (this.passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this.passed} tests passed` : '0 tests passed') + ConsoleColors.Modifier.Reset;
+    '\n' + `Tests: ${this.passed + this.failed}` + '\n' + `Time: ${time / 1000} sec` + '\n';
     console.log(text);
   }
 }
