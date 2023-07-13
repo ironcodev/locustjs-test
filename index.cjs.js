@@ -606,18 +606,17 @@ class TestRunner {
   }
   report(detailed) {
     let time = 0;
-    console.log('Finished.\n\n');
+    console.log('Finished.\n');
     for (let i = 0; i < this._results.length; i++) {
       const result = this._results[i];
       if (detailed) {
-        let message;
+        let message = '\n';
         if (result.success) {
-          message = `${i + 1}. \x1b[${ConsoleColors.ForeColor.White}m${result.test}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+          message += `${i + 1}. \x1b[${ConsoleColors.ForeColor.White}m${result.test}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
         } else {
-          message = `${i + 1}. \x1b[${ConsoleColors.ForeColor.White}m${result.test}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+          message += `${i + 1}. \x1b[${ConsoleColors.ForeColor.White}m${result.test}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
           message += '\n';
           message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString()} ${ConsoleColors.Modifier.Reset}`;
-          message += '\n';
         }
         console.log(message);
       }
@@ -633,7 +632,7 @@ class TestRunner {
         }
       }
     }
-    const text = (detailed ? '\n' : '') + (this._failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this._failed} tests failed ${ConsoleColors.Modifier.Reset}` : '0 tests failed') + ', ' + (this._passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this._passed} tests passed ${ConsoleColors.Modifier.Reset}` : '0 tests passed') + '\n' + `Tests: ${this._passed + this._failed}` + '\n' + `Time: ${time / 1000} sec` + '\n';
+    const text = (detailed ? '\n' : '') + `Tests: ${this._passed + this._failed}` + '\n' + `Time: ${time / 1000} sec` + '\n\n' + (this._passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this._passed} tests passed ${ConsoleColors.Modifier.Reset}` : '0 tests passed') + ', ' + (this._failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this._failed} tests failed ${ConsoleColors.Modifier.Reset}` : '0 tests failed') + '\n';
     console.log(text);
   }
   log(filename) {
