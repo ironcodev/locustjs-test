@@ -624,7 +624,7 @@ class TestRunner {
       time += result.time;
     }
     if (detailed && this._errors.length) {
-      console.log('Progress errors:');
+      console.log('Errors:');
       for (let error of this._errors) {
         if (error.index !== undefined) {
           console.log(`${error.index}. ${error.test}: ${error.err.innerException.toString()}`);
@@ -641,7 +641,7 @@ class TestRunner {
       results: this._results,
       errors: this._errors
     });
-    if (filename === null) {
+    if (filename == null) {
       const d = new Date();
       const year = d.getFullYear().toString().padStart(4, '0');
       const month = (d.getMonth() + 1).toString().padStart(2, '0');

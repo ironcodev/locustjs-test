@@ -430,7 +430,7 @@ class TestRunner {
 		}
 
 		if (detailed && this._errors.length) {
-			console.log('Progress errors:');
+			console.log('Errors:');
 
 			for (let error of this._errors) {
 				if (error.index !== undefined) {
@@ -459,7 +459,7 @@ class TestRunner {
 			errors: this._errors
 		});
 
-		if (filename === null) {
+		if (filename == null) {
 			const d = new Date();
 
 			const year = d.getFullYear().toString().padStart(4, '0');
