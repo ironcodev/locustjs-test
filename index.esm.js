@@ -415,9 +415,9 @@ class TestRunner {
 				let message;
 
 				if (result.success) {
-					message = `${i}. ${result.test}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`
+					message = `${i + 1}. \x1b[${ConsoleColors.ForeColor.White}m${result.test}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`
 				} else {
-					message = `${i}. ${result.test}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+					message = `${i + 1}. \x1b[${ConsoleColors.ForeColor.White}m${result.test}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
 					message += '\n';
 					message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString()} ${ConsoleColors.Modifier.Reset}`;
 					message += '\n';
