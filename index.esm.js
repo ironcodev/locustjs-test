@@ -1,4 +1,4 @@
-import { isArray, isFunction, isNaN, isObject, isPrimitive, equals } from '@locustjs/base';
+import { isArray, isFunction, isObject, isPrimitive, equals } from '@locustjs/base';
 import { Exception } from '@locustjs/exception';
 import fs from 'fs';
 import path from 'path';
