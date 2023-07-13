@@ -568,7 +568,7 @@ class TestRunner {
             }
             return _test;
           }).filter(test => test instanceof Test).map((test, i) => this._runSingle(test, onProgress, i));
-          Promise.all(_tests).then(_ => res()).catch(ex => {
+          Promise.all(_tests).then(_ => res(this.result)).catch(ex => {
             this._errors.push({
               err: new Exception({
                 message: `not all tests succeeded. check errors.`,
@@ -577,7 +577,7 @@ class TestRunner {
                 innerException: ex
               })
             });
-            res();
+            res(this.result);
           });
         } else {
           this._errors.push({
@@ -587,7 +587,7 @@ class TestRunner {
               status: 'invalid-tests'
             })
           });
-          res();
+          res(this.result);
         }
       } else {
         this._errors.push({
@@ -597,7 +597,7 @@ class TestRunner {
             status: 'no-tests'
           })
         });
-        res();
+        res(this.result);
       }
     });
   }
@@ -632,7 +632,7 @@ class TestRunner {
         }
       }
     }
-    const text = (detailed ? '\n' : '') + `Tests: ${this._passed + this._failed}` + '\n' + `Time: ${time / 1000} sec` + '\n\n' + (this._passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this._passed} tests passed ${ConsoleColors.Modifier.Reset}` : '0 tests passed') + ', ' + (this._failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this._failed} tests failed ${ConsoleColors.Modifier.Reset}` : '0 tests failed') + '\n';
+    const text = (detailed ? '\n' : '') + `Tests: ${this._passed + this._failed}` + '\n' + `Time: ${time / 1000} sec` + '\n\n' + (this._passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this._passed} tests passed${ConsoleColors.Modifier.Reset}` : '0 tests passed') + ', ' + (this._failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this._failed} tests failed${ConsoleColors.Modifier.Reset}` : '0 tests failed') + '\n';
     console.log(text);
   }
   log(filename) {
