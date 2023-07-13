@@ -522,7 +522,7 @@ class TestRunner {
       } catch (ex) {
         this._errors.push({
           index: i,
-          test,
+          test: test.name,
           err: new Exception({
             message: `onProgress failed for test '${test.name} at index ${i}'.`,
             code: 1500,
@@ -612,11 +612,11 @@ class TestRunner {
       if (detailed) {
         let message;
         if (result.success) {
-          message = `${i}. ${result.test.name}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+          message = `${i}. ${result.test}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
         } else {
-          message = `${i}. ${result.test.name}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+          message = `${i}. ${result.test}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
           message += '\n';
-          message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString('\n')} ${ConsoleColors.Modifier.Reset}`;
+          message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString()} ${ConsoleColors.Modifier.Reset}`;
           message += '\n';
         }
         console.log(message);
@@ -626,7 +626,11 @@ class TestRunner {
     if (detailed && this._errors.length) {
       console.log('Progress errors:');
       for (let error of this._errors) {
-        console.log(`${error.index}. ${error.test.name}: ${error.err.innerException.toString()}`);
+        if (error.index !== undefined) {
+          console.log(`${error.index}. ${error.test}: ${error.err.innerException.toString()}`);
+        } else {
+          console.log(`${error.err.toString()}`);
+        }
       }
     }
     const text = (detailed ? '\n' : '') + (this._failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this._failed} tests failed ${ConsoleColors.Modifier.Reset}` : '0 tests failed') + ', ' + (this._passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this._passed} tests passed ${ConsoleColors.Modifier.Reset}` : '0 tests passed') + '\n' + `Tests: ${this._passed + this._failed}` + '\n' + `Time: ${time / 1000} sec` + '\n';

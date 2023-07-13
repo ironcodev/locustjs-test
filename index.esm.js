@@ -333,7 +333,7 @@ class TestRunner {
 			try {
 				onProgress(i, test);
 			} catch (ex) {
-				this._errors.push({ index: i, test, err: new Exception({ message: `onProgress failed for test '${test.name} at index ${i}'.`, code: 1500, status: 'progress-failed', innerException: ex }) })
+				this._errors.push({ index: i, test: test.name, err: new Exception({ message: `onProgress failed for test '${test.name} at index ${i}'.`, code: 1500, status: 'progress-failed', innerException: ex }) })
 			}
 		}
 
@@ -415,11 +415,11 @@ class TestRunner {
 				let message;
 
 				if (result.success) {
-					message = `${i}. ${result.test.name}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`
+					message = `${i}. ${result.test}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`
 				} else {
-					message = `${i}. ${result.test.name}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+					message = `${i}. ${result.test}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
 					message += '\n';
-					message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString('\n')} ${ConsoleColors.Modifier.Reset}`;
+					message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString()} ${ConsoleColors.Modifier.Reset}`;
 					message += '\n';
 				}
 
@@ -433,7 +433,11 @@ class TestRunner {
 			console.log('Progress errors:');
 
 			for (let error of this._errors) {
-				console.log(`${error.index}. ${error.test.name}: ${error.err.innerException.toString()}`);
+				if (error.index !== undefined) {
+					console.log(`${error.index}. ${error.test}: ${error.err.innerException.toString()}`);
+				} else {
+					console.log(`${error.err.toString()}`);
+				}
 			}
 		}
 
