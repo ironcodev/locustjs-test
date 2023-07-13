@@ -1,5 +1,7 @@
-import { isArray, isFunction } from '@locustjs/base';
+import { isArray, isFunction, isNaN, isObject, isPrimitive, equals } from '@locustjs/base';
 import { Exception } from '@locustjs/exception';
+import fs from 'fs';
+import path from 'path';
 
 class Expect {
 	constructor(value) {
@@ -67,74 +69,206 @@ class Expect {
 			throw new Exception({ message: `value is null/undefined`, code: 1011, status: 'null-or-undefined' })
 		}
 	}
-	toThrow(fn) {
-		if (!isFunction(fn)) {
-			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'no-func' })
+	toThrow(ex, shape = false, strict = false) {
+		if (!isFunction(this.value)) {
+			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'not-func' })
 		}
 
 		let ok = false;
 
 		try {
-			fn();
+			this.value();
 
 			ok = true;
-		} catch (e) { }
+		} catch (e) {
+			if (ex !== undefined) {
+				if (isPrimitive(ex)) {
+					if (e !== ex) {
+						throw new Exception({ message: `given function threw incorrect error.`, code: 1018, status: 'incorrect-throw-error' })
+					}
+				} else if (isFunction(ex)) {
+					if (!(e instanceof ex)) {
+						throw new Exception({ message: `given function threw incorrect instance.`, code: 1019, status: 'incorrect-throw-instance' })
+					}
+				} else if (isObject(ex)) {
+					if (shape) {
+						if (!equals(e, ex, strict)) {
+							throw new Exception({ message: `given function threw incorrect object shape.`, code: 1020, status: 'incorrect-throw-shape' })
+						}
+					} else {
+						if (e !== ex) {
+							throw new Exception({ message: `given function threw incorrect object.`, code: 1021, status: 'incorrect-throw-object' })
+						}
+					}
+				} else {
+					if (e !== ex) {
+						throw new Exception({ message: `given function threw incorrect value.`, code: 1022, status: 'incorrect-throw-value' })
+					}
+				}
+			}
+		}
 
 		if (ok) {
 			throw new Exception({ message: `given function ran without throwing any errors.`, code: 1013, status: 'ran-to-completion' })
 		}
 	}
-	async toThrowAsync(fn) {
-		if (!isFunction(fn)) {
-			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'no-func' })
+	async toThrowAsync(ex, shape = false, strict = false) {
+		if (!isFunction(this.value)) {
+			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'not-func' })
 		}
 
 		let ok = false;
 
 		try {
-			await fn();
+			await this.value();
 
 			ok = true;
-		} catch (e) { }
+		} catch (e) {
+			if (ex !== undefined) {
+				if (isPrimitive(ex)) {
+					if (e !== ex) {
+						throw new Exception({ message: `given function threw incorrect error.`, code: 1018, status: 'incorrect-throw-error' })
+					}
+				} else if (isFunction(ex)) {
+					if (!(e instanceof ex)) {
+						throw new Exception({ message: `given function threw incorrect instance.`, code: 1019, status: 'incorrect-throw-instance' })
+					}
+				} else if (isObject(ex)) {
+					if (shape) {
+						if (!equals(e, ex, strict)) {
+							throw new Exception({ message: `given function threw incorrect object shape.`, code: 1020, status: 'incorrect-throw-shape' })
+						}
+					} else {
+						if (e !== ex) {
+							throw new Exception({ message: `given function threw incorrect object.`, code: 1021, status: 'incorrect-throw-object' })
+						}
+					}
+				} else {
+					if (e !== ex) {
+						throw new Exception({ message: `given function threw incorrect value.`, code: 1022, status: 'incorrect-throw-value' })
+					}
+				}
+			}
+		}
 
 		if (ok) {
 			throw new Exception({ message: `given function ran without throwing any errors.`, code: 1013, status: 'ran-to-completion' })
 		}
 	}
-	notToThrow(fn) {
-		if (!isFunction(fn)) {
-			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'no-func' })
+	notToThrow(ex, shape = false, strict = false) {
+		if (!isFunction(this.value)) {
+			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'not-func' })
 		}
 
 		let ok = true;
 		let error;
 
 		try {
-			fn();
+			this.value();
 
 			ok = false;
-		} catch (e) { error = e; }
+		} catch (e) {
+			error = e;
+
+			if (ex !== undefined) {
+				if (isPrimitive(ex)) {
+					if (e === ex) {
+						throw new Exception({ message: `given function threw incorrect error.`, code: 1018, status: 'incorrect-throw-error' })
+					}
+				} else if (isFunction(ex)) {
+					if (e instanceof ex) {
+						throw new Exception({ message: `given function threw incorrect instance.`, code: 1019, status: 'incorrect-throw-instance' })
+					}
+				} else if (isObject(ex)) {
+					if (shape) {
+						if (equals(e, ex, strict)) {
+							throw new Exception({ message: `given function threw incorrect object shape.`, code: 1020, status: 'incorrect-throw-shape' })
+						}
+					} else {
+						if (e === ex) {
+							throw new Exception({ message: `given function threw incorrect object.`, code: 1021, status: 'incorrect-throw-object' })
+						}
+					}
+				} else {
+					if (e === ex) {
+						throw new Exception({ message: `given function threw incorrect value.`, code: 1022, status: 'incorrect-throw-value' })
+					}
+				}
+			}
+		}
 
 		if (ok) {
 			throw new Exception({ message: `given function threw an error.`, code: 1014, status: 'ran-to-error', innerException: error })
 		}
 	}
-	async notToThrowAsync(fn) {
-		if (!isFunction(fn)) {
-			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'no-func' })
+	async notToThrowAsync(ex, shape = false, strict = false) {
+		if (!isFunction(this.value)) {
+			throw new Exception({ message: `given argument is not a function.`, code: 1012, status: 'not-func' })
 		}
 
 		let ok = true;
 		let error;
 
 		try {
-			await fn();
+			await this.value();
 
 			ok = false;
-		} catch (e) { error = e; }
+		} catch (e) {
+			error = e;
+
+			if (ex !== undefined) {
+				if (isPrimitive(ex)) {
+					if (e === ex) {
+						throw new Exception({ message: `given function threw incorrect error.`, code: 1018, status: 'incorrect-throw-error' })
+					}
+				} else if (isFunction(ex)) {
+					if (e instanceof ex) {
+						throw new Exception({ message: `given function threw incorrect instance.`, code: 1019, status: 'incorrect-throw-instance' })
+					}
+				} else if (isObject(ex)) {
+					if (shape) {
+						if (equals(e, ex, strict)) {
+							throw new Exception({ message: `given function threw incorrect object shape.`, code: 1020, status: 'incorrect-throw-shape' })
+						}
+					} else {
+						if (e === ex) {
+							throw new Exception({ message: `given function threw incorrect object.`, code: 1021, status: 'incorrect-throw-object' })
+						}
+					}
+				} else {
+					if (e === ex) {
+						throw new Exception({ message: `given function threw incorrect value.`, code: 1022, status: 'incorrect-throw-value' })
+					}
+				}
+			}
+		}
 
 		if (ok) {
 			throw new Exception({ message: `given function threw an error.`, code: 1014, status: 'ran-to-error', innerException: error })
+		}
+	}
+	toBeTruthy() {
+		if (this.value) {
+		} else {
+			throw new Exception({ message: `${this.value} is not truthy`, code: 1015, status: 'not-truthy' })
+		}
+	}
+	toBeFalsy() {
+		if (!this.value) {
+		} else {
+			throw new Exception({ message: `${this.value} is not falsy`, code: 1016, status: 'not-falsy' })
+		}
+	}
+	toBeNaN() {
+		if (isNaN(this.value)) {
+		} else {
+			throw new Exception({ message: `${this.value} is not NaN`, code: 1017, status: 'not-nan' })
+		}
+	}
+	notToBeNaN() {
+		if (!isNaN(this.value)) {
+		} else {
+			throw new Exception({ message: `${this.value} is NaN`, code: 1023, status: 'is-nan' })
 		}
 	}
 }
@@ -189,43 +323,43 @@ const ConsoleColors = {
 
 class TestRunner {
 	constructor() {
-		this.passed = 0;
-		this.failed = 0;
-		this.results = []
-		this.errors = []
+		this._passed = 0;
+		this._failed = 0;
+		this._results = []
+		this._errors = []
 	}
 	async _runSingle(test, onProgress, i) {
 		if (isFunction(onProgress)) {
 			try {
 				onProgress(i, test);
 			} catch (ex) {
-				this.errors.push({ err: new Exception({ message: `onProgress failed for test '${test.name} at index ${i}'.`, code: 1500, status: 'progress-failed' }) })
+				this._errors.push({ index: i, test, err: new Exception({ message: `onProgress failed for test '${test.name} at index ${i}'.`, code: 1500, status: 'progress-failed', innerException: ex }) })
 			}
 		}
 
 		const tr = await test.run();
 
-		this.results.push(tr);
+		this._results.push(tr);
 
 		if (tr.success) {
-			this.passed++;
+			this._passed++;
 		} else {
-			this.failed++;
+			this._failed++;
 		}
 	}
 	get result() {
 		return {
-			passed: this.passed,
-			failed: this.failed,
-			results: this.results,
-			errors: this.errors
+			passed: this._passed,
+			failed: this._failed,
+			results: this._results,
+			errors: this._errors
 		}
 	}
 	run(tests, onProgress) {
-		this.passed = 0;
-		this.failed = 0;
-		this.results = [];
-		this.errors = [];
+		this._passed = 0;
+		this._failed = 0;
+		this._results = [];
+		this._errors = [];
 
 		return new Promise(res => {
 			if (tests) {
@@ -250,41 +384,99 @@ class TestRunner {
 						.map((test, i) => this._runSingle(test, onProgress, i));
 
 					Promise.all(_tests).then(_ => res()).catch(ex => {
-						this.errors.push({ err: new Exception({ message: `not all tests succeeded. check errors.`, code: 1503, status: 'partial-finished', innerException: ex }) });
+						this._errors.push({ err: new Exception({ message: `not all tests succeeded. check errors.`, code: 1503, status: 'partial-finished', innerException: ex }) });
 
 						res();
 					});
 				} else {
-					this.errors.push({ err: new Exception({ message: `invalid tests. expected array or a single test.`, code: 1502, status: 'invalid-tests' }) });
+					this._errors.push({ err: new Exception({ message: `invalid tests. expected array or a single test.`, code: 1502, status: 'invalid-tests' }) });
 
 					res();
 				}
 			} else {
-				this.errors.push({ err: new Exception({ message: `no tests given to be ran.`, code: 1501, status: 'no-tests' }) });
+				this._errors.push({ err: new Exception({ message: `no tests given to be ran.`, code: 1501, status: 'no-tests' }) });
 
 				res();
 			}
 		})
 	}
-	report() {
+	_getTime(time) {
+		return `${time / 1000} sec`
+	}
+	report(detailed) {
 		let time = 0;
 
-		for (let r of this.results) {
-			time += r.time;
+		console.log('Finished.\n\n');
+
+		for (let i = 0; i < this._results.length; i++) {
+			const result = this._results[i];
+
+			if (detailed) {
+				let message;
+
+				if (result.success) {
+					message = `${i}. ${result.test.name}: \x1b[${ConsoleColors.ForeColor.Green}m passed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`
+				} else {
+					message = `${i}. ${result.test.name}: \x1b[${ConsoleColors.ForeColor.Red}m failed ${ConsoleColors.Modifier.Reset} (${this._getTime(result.time)})`;
+					message += '\n';
+					message += `\x1b[${ConsoleColors.ForeColor.White}m${result.err.code}: ${result.err.toString('\n')} ${ConsoleColors.Modifier.Reset}`;
+					message += '\n';
+				}
+
+				console.log(message);
+			}
+
+			time += result.time;
 		}
 
-		const text = 'Finished.' +
-			'\n' +
-			(this.failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this.failed} tests failed` : '0 tests failed') + ConsoleColors.Modifier.Reset +
+		if (detailed && this._errors.length) {
+			console.log('Progress errors:');
+
+			for (let error of this._errors) {
+				console.log(`${error.index}. ${error.test.name}: ${error.err.innerException.toString()}`);
+			}
+		}
+
+		const text = (detailed ? '\n': '') +
+			(this._failed > 0 ? `\x1b[${ConsoleColors.ForeColor.Red}m ${this._failed} tests failed ${ConsoleColors.Modifier.Reset}` : '0 tests failed') +
 			', ' +
-			(this.passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this.passed} tests passed` : '0 tests passed') + ConsoleColors.Modifier.Reset +
+			(this._passed > 0 ? `\x1b[${ConsoleColors.ForeColor.Green}m ${this._passed} tests passed ${ConsoleColors.Modifier.Reset}` : '0 tests passed') +
 			'\n' +
-			`Tests: ${this.passed + this.failed}` +
+			`Tests: ${this._passed + this._failed}` +
 			'\n' +
 			`Time: ${time / 1000} sec` +
 			'\n';
 
 		console.log(text);
+	}
+	log(filename) {
+		const content = JSON.stringify({
+			results: this._results,
+			errors: this._errors
+		});
+
+		if (filename === null) {
+			const d = new Date();
+
+			const year = d.getFullYear().toString().padStart(4, '0');
+			const month = (d.getMonth() + 1).toString().padStart(2, '0');
+			const day = d.getDate().toString().padStart(2, '0');
+			const hours = d.getHours().toString().padStart(2, '0');
+			const minutes = d.getMinutes().toString().padStart(2, '0');
+			const seconds = d.getSeconds().toString().padStart(2, '0');
+
+			filename = `test-${year}-${month}-${day}-${hours}${minutes}${seconds}.log`;
+		}
+
+		const filepath = path.join(process.cwd(), filename);
+
+		try	{
+			fs.writeFileSync(filepath, content);
+
+			console.log(`tests outcome wrote in ${filename}.`);
+		} catch (ex) {
+			console.log('writing tests outcome failed.\n' + ex);
+		}
 	}
 }
 

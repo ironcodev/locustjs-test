@@ -23,9 +23,15 @@ npm i @locustjs/test
 - `toThrowAsync()`
 - `notToThrow()`
 - `notToThrowAsync()`
+- `toBeTruthy()`
+- `toBeFalsy()`
+- `toBeNaN()`
+- `notToBeNaN()`
 
 Example:
 ```javascript
+import TestRunner from '@locustjs/test';
+
 const tests = [
   ['test 1', expect => expect(2 + 2).toBe(4)],
   ['test 2', expect => expect(undefined).toBeUndefined()],
@@ -37,4 +43,5 @@ const runner = new TestRunner();
 await runner.run(tests);
 
 runner.report();
+runner.log();
 ```
