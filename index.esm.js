@@ -282,9 +282,10 @@ class Test {
 	}
 	run() {
 		return new Promise(res => {
+			const start = new Date();
+
 			if (isFunction(this.fn)) {
 				try {
-					const start = new Date();
 					const _result = this.fn(expect);
 
 					if (_result && isFunction(_result.then)) {
@@ -457,7 +458,7 @@ class TestRunner {
 		const content = JSON.stringify({
 			results: this._results,
 			errors: this._errors
-		});
+		}, null, '\t');
 
 		if (filename == null) {
 			const d = new Date();
@@ -469,7 +470,7 @@ class TestRunner {
 			const minutes = d.getMinutes().toString().padStart(2, '0');
 			const seconds = d.getSeconds().toString().padStart(2, '0');
 
-			filename = `test-${year}-${month}-${day}-${hours}${minutes}${seconds}.log`;
+			filename = `test-${year}-${month}-${day}-${hours}${minutes}${seconds}.json`;
 		}
 
 		const filepath = path.join(process.cwd(), filename);
