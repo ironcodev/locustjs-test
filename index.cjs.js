@@ -528,6 +528,40 @@ class Expect {
     }
     return this;
   }
+  toBeValid(fnValidation) {
+    if (!isFunction(fnValidation)) {
+      throw new Exception({
+        message: `fnValidation is not function`,
+        code: 1064,
+        status: 'to-be-valid'
+      });
+    }
+    if (!fnValidation(this.value)) {
+      throw new Exception({
+        message: `${this.value} is not valid`,
+        code: 1065,
+        status: 'to-be-valid'
+      });
+    }
+    return this;
+  }
+  notToBeValid(fnValidation) {
+    if (!isFunction(fnValidation)) {
+      throw new Exception({
+        message: `fnValidation is not function`,
+        code: 1066,
+        status: 'not-to-be-valid'
+      });
+    }
+    if (fnValidation(this.value)) {
+      throw new Exception({
+        message: `${this.value} is valid`,
+        code: 1067,
+        status: 'not-to-be-valid'
+      });
+    }
+    return this;
+  }
   toThrow(ex, shape = false, strict = false) {
     if (!isFunction(this.value)) {
       throw new Exception({

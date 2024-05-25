@@ -23,6 +23,10 @@ const tests = [
         .toBeBetween(5, 15)
         .notToBeBetween(12, 20)
         .toBeOfType("number");
+
+      expect(n)
+      .toBeValid(x => x > 2)
+      .notToBeValid(x => x < 2);
     },
   ],
   [
