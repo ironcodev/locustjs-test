@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@locustjs/base':
-    specifier: ^2.1.0
-    version: 2.1.0
+    specifier: ^4.0.0
+    version: 4.0.0
   '@locustjs/exception':
     specifier: ^2.0.2
     version: 2.0.2
@@ -284,6 +284,10 @@ packages:
 
   /@locustjs/base@2.1.0:
     resolution: {integrity: sha512-o650/LAmcdjpJzGh36JDVJ4FXvFk4EFp4/g56RNlpfmLvgbeP8Zb/OPUucql+DkBhksbtkDLUNIFVnQMi+G4Iw==}
+    dev: false
+
+  /@locustjs/base@4.0.0:
+    resolution: {integrity: sha512-a9/K0PoNiupIe3Wpza9iKtdJk9Kp1xfnDWQEtzdL4LgSVrRJdphcz68YJtpMBnkd5vXUvdpfudQNxTQWyBtjjA==}
     dev: false
 
   /@locustjs/exception@2.0.2:

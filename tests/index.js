@@ -66,7 +66,7 @@ const tests = [
     },
   ],
   [
-    "Test 3: empty object",
+    "Test 5: empty object",
     function (expect) {
       const n = {};
 
@@ -80,7 +80,7 @@ const tests = [
     },
   ],
   [
-    "Test 4: object",
+    "Test 6: object",
     function (expect) {
       const n = {a:10};
 
@@ -94,7 +94,15 @@ const tests = [
     },
   ],
   [
-    "Test 4: class",
+    "Test 7: error",
+    function (expect) {
+      const x = 10;
+
+      expect(x).toBeGreaterThan(20);
+    },
+  ],
+  [
+    "Test 8: class",
     function (expect) {
       const x = new Bar();
 
@@ -109,8 +117,4 @@ const tests = [
   ]
 ];
 
-const runner = new TestRunner();
-
-runner.run(tests).then((result) => {
-  runner.report(result.failed > 0);
-});
+TestRunner.start(tests);
