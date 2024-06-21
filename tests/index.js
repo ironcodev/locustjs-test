@@ -25,8 +25,8 @@ const tests = [
         .toBeOfType("number");
 
       expect(n)
-      .toBeValid(x => x > 2)
-      .notToBeValid(x => x < 2);
+        .toBeValid((x) => x > 2)
+        .notToBeValid((x) => x < 2);
     },
   ],
   [
@@ -48,10 +48,7 @@ const tests = [
     function (expect) {
       const n = [];
 
-      expect(n)
-        .toBeDefined()
-        .toBeArray()
-        .toBeEmptyArray();
+      expect(n).toBeDefined().toBeArray().toBeEmptyArray();
     },
   ],
   [
@@ -59,10 +56,7 @@ const tests = [
     function (expect) {
       const n = [10];
 
-      expect(n)
-        .toBeDefined()
-        .toBeArray()
-        .toBeSomeArray();
+      expect(n).toBeDefined().toBeArray().toBeSomeArray();
     },
   ],
   [
@@ -82,7 +76,7 @@ const tests = [
   [
     "Test 6: object",
     function (expect) {
-      const n = {a:10};
+      const n = { a: 10 };
 
       expect(n)
         .toBeDefined()
@@ -101,8 +95,9 @@ const tests = [
       expect(x).toBeGreaterThan(20);
     },
   ],
+  ["Test 8: not expected", function (expect) {}],
   [
-    "Test 8: class",
+    "Test 9: class",
     function (expect) {
       const x = new Bar();
 
@@ -114,7 +109,7 @@ const tests = [
         .toBeInstanceOf(Foo)
         .notToBeInstanceOf(Buz);
     },
-  ]
+  ],
 ];
 
 TestRunner.start(tests);
