@@ -97,7 +97,13 @@ const tests = [
   ],
   ["Test 8: not expected", function (expect) {}],
   [
-    "Test 9: class",
+    "Test 9: error without expect",
+    function (expect) {
+      throw "some err";
+    },
+  ],
+  [
+    "Test 10: class",
     function (expect) {
       const x = new Bar();
 
