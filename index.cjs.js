@@ -568,11 +568,11 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
     key: "notToBeSomeArray",
     value: function notToBeSomeArray() {
       this._expected = true;
-      if ((0, _base.isArray)(this.value)) {
+      if (!(0, _base.isArray)(this.value)) {
         throw new TestException({
-          message: "".concat(this.value, " is array"),
+          message: "".concat(this.value, " is not array"),
           code: 1068,
-          status: "is-array"
+          status: "is-not-array"
         });
       }
       if (this.value.length) {

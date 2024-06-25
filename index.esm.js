@@ -527,11 +527,11 @@ class Expect {
   notToBeSomeArray() {
     this._expected = true;
 
-    if (isArray(this.value)) {
+    if (!isArray(this.value)) {
       throw new TestException({
-        message: `${this.value} is array`,
+        message: `${this.value} is not array`,
         code: 1068,
-        status: "is-array",
+        status: "is-not-array",
       });
     }
     if (this.value.length) {
