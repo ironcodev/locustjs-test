@@ -16,7 +16,6 @@ import {
   isIterable,
   isSomeArray,
   isSubClassOf,
-  isNullOrEmpty,
 } from "@locustjs/base";
 import { Exception } from "@locustjs/exception";
 import fs from "fs";
@@ -1310,8 +1309,12 @@ const bgGray = "\x1b[100m";
 
 class TestRunner {
   constructor() {
+    this._init();
+  }
+  _init() {
     this._passed = 0;
     this._failed = 0;
+    this._faulted = 0;
     this._unknown = 0;
     this._results = [];
     this._errors = [];
@@ -1338,7 +1341,13 @@ class TestRunner {
 
     this._results.push(tr);
 
-    if (!tr.expected) {
+    if (isObject(tr.err)) {
+      if (!tr.expected) {
+        this._faulted++;
+      } else {
+        this._failed++;
+      }
+    } else if (!tr.expected) {
       this._unknown++;
     } else if (tr.success) {
       this._passed++;
@@ -1350,15 +1359,13 @@ class TestRunner {
     return {
       passed: this._passed,
       failed: this._failed,
+      faulted: this._faulted,
       results: this._results,
       errors: this._errors,
     };
   }
   run(tests, onProgress) {
-    this._passed = 0;
-    this._failed = 0;
-    this._results = [];
-    this._errors = [];
+    this._init();
 
     return new Promise((res) => {
       if (tests) {
@@ -1434,7 +1441,7 @@ class TestRunner {
 
       if (detailed) {
         let message = "\n" + (i + 1) + ". ";
-        let err = !isNullOrEmpty(testResult.err)
+        let err = isObject(testResult.err)
           ? testResult.err.toString().split("\n")
           : [];
 
@@ -1449,7 +1456,17 @@ class TestRunner {
           )
           .join("\n");
 
-        if (!testResult.expected) {
+        if (isObject(testResult.err)) {
+          if (!testResult.expected) {
+            message += `${bright}${fgWhite}${testResult.test}: ${fgYellow}faulted${reset} ${t}`;
+            message += "\n";
+            message += `${fgGray}${err} ${reset}`;
+          } else {
+            message += `${bright}${fgWhite}${testResult.test}: ${fgRed}failed${reset} ${t}`;
+            message += "\n";
+            message += `${fgGray}${err} ${reset}`;
+          }
+        } else if (!testResult.expected) {
           message += `${bright}${fgWhite}${testResult.test}: ${fgMagenta}expect not used${reset} ${t}`;
 
           if (testResult.err) {
@@ -1488,7 +1505,7 @@ class TestRunner {
 
     const text =
       (detailed ? "\n" : "") +
-      `${bright}Number of tests: ${reset}${this._passed + this._failed}` +
+      `${bright}Number of tests: ${reset}${this._results.length}` +
       "\n" +
       `${bright}Total Time: ${reset}${time / 1000} sec` +
       "\n\n" +
@@ -1497,10 +1514,13 @@ class TestRunner {
         : `0 tests passed${reset}`) +
       ", " +
       (this._failed > 0
-        ? `${fgRed} ${this._failed} test(s) failed${reset}`
+        ? `${fgRed}${this._failed} test(s) failed${reset}`
         : `0 tests failed${reset}`) +
+      (this._faulted > 0
+        ? `, ${fgYellow}${this._faulted} test(s) faulted${reset}`
+        : ``) +
       (this._unknown > 0
-        ? `, ${fgMagenta} ${this._unknown} test(s) are unknown${reset}`
+        ? `, ${fgMagenta}${this._unknown} test(s) are unknown${reset}`
         : ``) +
       "\n";
 

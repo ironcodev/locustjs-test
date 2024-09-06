@@ -1464,13 +1464,19 @@ var bgGray = "\x1b[100m";
 var TestRunner = /*#__PURE__*/function () {
   function TestRunner() {
     _classCallCheck(this, TestRunner);
-    this._passed = 0;
-    this._failed = 0;
-    this._unknown = 0;
-    this._results = [];
-    this._errors = [];
+    this._init();
   }
   return _createClass(TestRunner, [{
+    key: "_init",
+    value: function _init() {
+      this._passed = 0;
+      this._failed = 0;
+      this._faulted = 0;
+      this._unknown = 0;
+      this._results = [];
+      this._errors = [];
+    }
+  }, {
     key: "_runSingle",
     value: function () {
       var _runSingle2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(test, onProgress, i) {
@@ -1503,7 +1509,13 @@ var TestRunner = /*#__PURE__*/function () {
             case 3:
               tr = _context3.sent;
               this._results.push(tr);
-              if (!tr.expected) {
+              if ((0, _base.isObject)(tr.err)) {
+                if (!tr.expected) {
+                  this._faulted++;
+                } else {
+                  this._failed++;
+                }
+              } else if (!tr.expected) {
                 this._unknown++;
               } else if (tr.success) {
                 this._passed++;
@@ -1527,6 +1539,7 @@ var TestRunner = /*#__PURE__*/function () {
       return {
         passed: this._passed,
         failed: this._failed,
+        faulted: this._faulted,
         results: this._results,
         errors: this._errors
       };
@@ -1535,10 +1548,7 @@ var TestRunner = /*#__PURE__*/function () {
     key: "run",
     value: function run(tests, onProgress) {
       var _this3 = this;
-      this._passed = 0;
-      this._failed = 0;
-      this._results = [];
-      this._errors = [];
+      this._init();
       return new Promise(function (res) {
         if (tests) {
           if (tests instanceof Test) {
@@ -1609,11 +1619,21 @@ var TestRunner = /*#__PURE__*/function () {
         var t = "(".concat(_this4._getTime(testResult.time), ")");
         if (detailed) {
           var message = "\n" + (i + 1) + ". ";
-          var err = !(0, _base.isNullOrEmpty)(testResult.err) ? testResult.err.toString().split("\n") : [];
+          var err = (0, _base.isObject)(testResult.err) ? testResult.err.toString().split("\n") : [];
           err = err.map(function (msg, i) {
             return "\t".concat(i == err.length - 1 ? "".concat(fgYellow) : "".concat(fgGray, "error ").concat(testResult.err.code, ": ")).concat(msg).concat(reset);
           }).join("\n");
-          if (!testResult.expected) {
+          if ((0, _base.isObject)(testResult.err)) {
+            if (!testResult.expected) {
+              message += "".concat(bright).concat(fgWhite).concat(testResult.test, ": ").concat(fgYellow, "faulted").concat(reset, " ").concat(t);
+              message += "\n";
+              message += "".concat(fgGray).concat(err, " ").concat(reset);
+            } else {
+              message += "".concat(bright).concat(fgWhite).concat(testResult.test, ": ").concat(fgRed, "failed").concat(reset, " ").concat(t);
+              message += "\n";
+              message += "".concat(fgGray).concat(err, " ").concat(reset);
+            }
+          } else if (!testResult.expected) {
             message += "".concat(bright).concat(fgWhite).concat(testResult.test, ": ").concat(fgMagenta, "expect not used").concat(reset, " ").concat(t);
             if (testResult.err) {
               message += "\n";
@@ -1652,7 +1672,7 @@ var TestRunner = /*#__PURE__*/function () {
           _iterator.f();
         }
       }
-      var text = (detailed ? "\n" : "") + "".concat(bright, "Number of tests: ").concat(reset).concat(this._passed + this._failed) + "\n" + "".concat(bright, "Total Time: ").concat(reset).concat(time / 1000, " sec") + "\n\n" + (this._passed > 0 ? "".concat(fgGreen, " ").concat(this._passed, " test(s) passed").concat(reset) : "0 tests passed".concat(reset)) + ", " + (this._failed > 0 ? "".concat(fgRed, " ").concat(this._failed, " test(s) failed").concat(reset) : "0 tests failed".concat(reset)) + (this._unknown > 0 ? ", ".concat(fgMagenta, " ").concat(this._unknown, " test(s) are unknown").concat(reset) : "") + "\n";
+      var text = (detailed ? "\n" : "") + "".concat(bright, "Number of tests: ").concat(reset).concat(this._results.length) + "\n" + "".concat(bright, "Total Time: ").concat(reset).concat(time / 1000, " sec") + "\n\n" + (this._passed > 0 ? "".concat(fgGreen, " ").concat(this._passed, " test(s) passed").concat(reset) : "0 tests passed".concat(reset)) + ", " + (this._failed > 0 ? "".concat(fgRed).concat(this._failed, " test(s) failed").concat(reset) : "0 tests failed".concat(reset)) + (this._faulted > 0 ? ", ".concat(fgYellow).concat(this._faulted, " test(s) faulted").concat(reset) : "") + (this._unknown > 0 ? ", ".concat(fgMagenta).concat(this._unknown, " test(s) are unknown").concat(reset) : "") + "\n";
       console.log(text);
     }
   }, {

@@ -14,6 +14,7 @@ const tests = [
   ['test 1', expect => expect(2 + 2).toBe(4)],
   ['test 2', expect => expect(undefined).toBeUndefined()],
   ['test 3', expect => expect(5).toBeGt(10)],  // this test fails
+  ...
 ];
 
 const runner = new TestRunner();
@@ -44,18 +45,25 @@ Sample output:
 
 8. <b>Test 8: not expected:</b> <span style="color:magenta">expect not used</span> (0 sec)
 
-9. <b>Test 9: error without expect:</b> <span style="color:magenta">expect not used</span> (0 sec)
+9. <b>Test 9: error without expect:</b> <span style="color:yellow">faulted</span> (0 sec)
 <div style="color:gray; margin-left: 50px">error 501: test 'Test 9: error without expect' failed.</div>
 <div style="color:yellow; margin-left: 50px">some err</div>
 
 10. Test 10: class: <span style="color:green">passed</span> (0 sec)
 
-<div><b>Number of tests: 8</b></div>
+<div><b>Number of tests: 10</b></div>
 <div><b>Total Time: 0.001</b> sec</div>
 <br/>
- <span style="color:green">7 test(s) passed</span>,  <span style="color:red">1 test(s) failed</span>,  <span style="color:magenta">2 test(s) are unknown</span>
+ <span style="color:green">7 test(s) passed</span>, <span style="color:red">1 test(s) failed</span>, <span style="color:yellow">1 test(s) faulted</span>, <span style="color:magenta">1 test(s) are unknown</span>
 
-# expect
+## Test result types
+
+- <span style="color:green">passed</span>: Test passed.
+- <span style="color:red">failed</span>: Test failed (at least one `expect` did not succeed).
+- <span style="color:yellow">faulted</span>: Test crashed (no `expect` was called).
+- <span style="color:magenta">unknown</span>: Test executed, however, no `expect` was seen.
+
+## expect
 Positive
 - `toBe(value)`
 - `toBeGt(value)`
@@ -131,6 +139,8 @@ Negative
 - `notToThrow(ex, shape = false, strict = false)`
 - `async notToThrowAsync(ex, shape = false, strict = false)`
 - `notToBeNaN()`
+
+## Qucik Testing
 
 `TestRunner` has a static method `start()` that simplifies running tests.
 
