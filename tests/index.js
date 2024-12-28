@@ -1,4 +1,4 @@
-import TestRunner from "../index.esm.js";
+import TestRunner from "../src";
 
 class Foo {}
 class Bar extends Foo {}

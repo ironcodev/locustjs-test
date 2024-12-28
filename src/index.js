@@ -1567,8 +1567,7 @@ class TestRunner {
       console.log("writing tests outcome failed.\n" + ex);
     }
   }
-  static async start(...tests) {
-    const tr = new TestRunner();
+  async test(...tests) {
     const lastArg = tests[tests.length - 1];
     const detailed = tests.length && isBool(lastArg) ? lastArg : false;
     let _tests = [];
@@ -1583,11 +1582,16 @@ class TestRunner {
       }
     }
 
-    const result = await tr.run(_tests);
+    const result = await this.run(_tests);
 
-    tr.report(detailed || result.failed > 0);
+    this.report(detailed || result.failed > 0);
 
-    return { runner: tr, result };
+    return { runner: this, result };
+  }
+  static start(...tests) {
+    const tr = new TestRunner();
+
+    return tr.test(...tests);
   }
 }
 

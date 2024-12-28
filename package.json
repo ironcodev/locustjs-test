@@ -1,6 +1,6 @@
 {
   "name": "@locustjs/test",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "This library provides a simple test runner.",
   "main": "dist/index.js",
   "module": "src/index.js",
