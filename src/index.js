@@ -886,6 +886,8 @@ class Expect {
             });
           }
         }
+      } else {
+        ok = false;
       }
     }
 
@@ -964,6 +966,8 @@ class Expect {
             });
           }
         }
+      } else {
+        ok = true;
       }
     }
 
@@ -1040,6 +1044,8 @@ class Expect {
             });
           }
         }
+      } else {
+        ok = false;
       }
     }
 
@@ -1118,6 +1124,8 @@ class Expect {
             });
           }
         }
+      } else {
+        ok = true;
       }
     }
 

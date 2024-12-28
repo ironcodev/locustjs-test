@@ -90,7 +90,7 @@ const tests = [
   [
     "Test 7: error",
     function (expect) {
-      const x = 10;
+      const x = 30;
 
       expect(x).toBeGreaterThan(20);
     },

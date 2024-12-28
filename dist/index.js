@@ -923,6 +923,8 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
               });
             }
           }
+        } else {
+          ok = false;
         }
       }
       if (ok) {
@@ -998,6 +1000,8 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
               });
             }
           }
+        } else {
+          ok = true;
         }
       }
       if (ok) {
@@ -1040,13 +1044,13 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
               return this.value();
             case 9:
               ok = true;
-              _context.next = 37;
+              _context.next = 40;
               break;
             case 12:
               _context.prev = 12;
               _context.t0 = _context["catch"](6);
               if (!(ex !== undefined)) {
-                _context.next = 37;
+                _context.next = 39;
                 break;
               }
               if (!(0, _base.isPrimitive)(ex)) {
@@ -1127,8 +1131,13 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
                 status: "incorrect-throw-value"
               });
             case 37:
+              _context.next = 40;
+              break;
+            case 39:
+              ok = false;
+            case 40:
               if (!ok) {
-                _context.next = 39;
+                _context.next = 42;
                 break;
               }
               throw new TestException({
@@ -1136,9 +1145,9 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
                 code: 1013,
                 status: "ran-to-completion"
               });
-            case 39:
+            case 42:
               return _context.abrupt("return", this);
-            case 40:
+            case 43:
             case "end":
               return _context.stop();
           }
@@ -1180,14 +1189,14 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
               return this.value();
             case 9:
               ok = false;
-              _context2.next = 38;
+              _context2.next = 41;
               break;
             case 12:
               _context2.prev = 12;
               _context2.t0 = _context2["catch"](6);
               error = _context2.t0;
               if (!(ex !== undefined)) {
-                _context2.next = 38;
+                _context2.next = 40;
                 break;
               }
               if (!(0, _base.isPrimitive)(ex)) {
@@ -1268,8 +1277,13 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
                 status: "incorrect-throw-value"
               });
             case 38:
+              _context2.next = 41;
+              break;
+            case 40:
+              ok = true;
+            case 41:
               if (!ok) {
-                _context2.next = 40;
+                _context2.next = 43;
                 break;
               }
               throw new TestException({
@@ -1278,9 +1292,9 @@ var Expect = exports.Expect = /*#__PURE__*/function () {
                 status: "ran-to-error",
                 innerException: error
               });
-            case 40:
+            case 43:
               return _context2.abrupt("return", this);
-            case 41:
+            case 44:
             case "end":
               return _context2.stop();
           }
