@@ -6,9 +6,14 @@ This library provides a simple test runner for unit-testing.
 npm i @locustjs/test
 ```
 
-Example:
+## Current Version
+```
+2.0.0
+```
+
+# Usage
 ```javascript
-import TestRunner from '@locustjs/test';
+import { TestRunner } from '@locustjs/test';
 
 const tests = [
   ['test 1', expect => expect(2 + 2).toBe(4)],
@@ -21,8 +26,8 @@ const runner = new TestRunner();
 
 await runner.run(tests);
 
-runner.report();
-runner.log();
+runner.report();  // detailed report
+runner.log(); // save report to file
 ```
 
 Sample output:
@@ -63,6 +68,9 @@ Sample output:
 - <span style="color:yellow">faulted</span>: Test crashed (no `expect` was called).
 - <span style="color:magenta">unknown</span>: Test executed, however, no `expect` was seen.
 
+
+Pay attention: `TestRunner` runs test simultaneously. Thus, tests should not have side-effects.
+
 ## expect
 Positive
 - `toBe(value)`
@@ -100,7 +108,9 @@ Positive
 - `toBeNull()`
 - `toBeNullOrUndefined()`
 - `toBeValid(fnValidation)`
+- `toThrow()`
 - `toThrow(ex, shape = false, strict = false)`
+- `async toThrowAsync()`
 - `async toThrowAsync(ex, shape = false, strict = false)`
 - `toBeTruthy()`
 - `toBeTrue()`
@@ -136,7 +146,9 @@ Negative
 - `notToBeNull()`
 - `notToBeNullOrUndefined()`
 - `notToBeValid(fnValidation)`
+- `notToThrow()`
 - `notToThrow(ex, shape = false, strict = false)`
+- `async notToThrowAsync()`
 - `async notToThrowAsync(ex, shape = false, strict = false)`
 - `notToBeNaN()`
 

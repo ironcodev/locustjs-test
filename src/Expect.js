@@ -1,11 +1,23 @@
-'use strict';
-
-var base = require('@locustjs/base');
-var fs = require('fs');
-var path = require('path');
-var exception = require('@locustjs/exception');
-
-class TestException extends exception.Exception {}
+import {
+  equals,
+  isString,
+  isNumber,
+  isDate,
+  isBool,
+  isBasic,
+  isPrimitive,
+  isEmpty,
+  isSomeString,
+  isObject,
+  isSomeObject,
+  isFunction,
+  isNumeric,
+  isArray,
+  isIterable,
+  isSomeArray,
+  isSubClassOf,
+} from "@locustjs/base";
+import TestException from "./TestException";
 
 class Expect {
   constructor(value) {
@@ -18,7 +30,8 @@ class Expect {
   toBe(value) {
     this._expected = true;
 
-    if (this.value === value) ; else {
+    if (this.value === value) {
+    } else {
       throw new TestException({
         message: `${this.value} is not equal to ${value}`,
         code: 1000,
@@ -160,7 +173,7 @@ class Expect {
   toBeString() {
     this._expected = true;
 
-    if (!base.isString(this.value)) {
+    if (!isString(this.value)) {
       throw new TestException({
         message: `${this.value} is not string`,
         code: 1026,
@@ -173,7 +186,7 @@ class Expect {
   notToBeString() {
     this._expected = true;
 
-    if (base.isString(this.value)) {
+    if (isString(this.value)) {
       throw new TestException({
         message: `${this.value} is string`,
         code: 1046,
@@ -185,7 +198,7 @@ class Expect {
   }
   toBeSomeString() {
     this._expected = true;
-    if (!base.isSomeString(this.value)) {
+    if (!isSomeString(this.value)) {
       throw new TestException({
         message: `${this.value} is not some string`,
         code: 1027,
@@ -198,7 +211,7 @@ class Expect {
   notToBeSomeString() {
     this._expected = true;
 
-    if (base.isSomeString(this.value)) {
+    if (isSomeString(this.value)) {
       throw new TestException({
         message: `${this.value} is some string`,
         code: 1047,
@@ -211,7 +224,7 @@ class Expect {
   toBeNumber() {
     this._expected = true;
 
-    if (!base.isNumber(this.value)) {
+    if (!isNumber(this.value)) {
       throw new TestException({
         message: `${this.value} is not number`,
         code: 1028,
@@ -224,7 +237,7 @@ class Expect {
   notToBeNumber() {
     this._expected = true;
 
-    if (base.isNumber(this.value)) {
+    if (isNumber(this.value)) {
       throw new TestException({
         message: `${this.value} is number`,
         code: 1048,
@@ -237,7 +250,7 @@ class Expect {
   toBeDate() {
     this._expected = true;
 
-    if (!base.isDate(this.value)) {
+    if (!isDate(this.value)) {
       throw new TestException({
         message: `${this.value} is not date`,
         code: 1029,
@@ -250,7 +263,7 @@ class Expect {
   notToBeDate() {
     this._expected = true;
 
-    if (base.isDate(this.value)) {
+    if (isDate(this.value)) {
       throw new TestException({
         message: `${this.value} is date`,
         code: 1049,
@@ -263,7 +276,7 @@ class Expect {
   toBeBool() {
     this._expected = true;
 
-    if (!base.isBool(this.value)) {
+    if (!isBool(this.value)) {
       throw new TestException({
         message: `${this.value} is not bool`,
         code: 1030,
@@ -276,7 +289,7 @@ class Expect {
   notToBeBool() {
     this._expected = true;
 
-    if (base.isBool(this.value)) {
+    if (isBool(this.value)) {
       throw new TestException({
         message: `${this.value} is bool`,
         code: 1050,
@@ -289,7 +302,7 @@ class Expect {
   toBeBasicType() {
     this._expected = true;
 
-    if (!base.isBasic(this.value)) {
+    if (!isBasic(this.value)) {
       throw new TestException({
         message: `${this.value} is not basic type`,
         code: 1031,
@@ -302,7 +315,7 @@ class Expect {
   notToBeBasicType() {
     this._expected = true;
 
-    if (base.isBasic(this.value)) {
+    if (isBasic(this.value)) {
       throw new TestException({
         message: `${this.value} is basic type`,
         code: 1051,
@@ -315,7 +328,7 @@ class Expect {
   toBePrimitive() {
     this._expected = true;
 
-    if (!base.isPrimitive(this.value)) {
+    if (!isPrimitive(this.value)) {
       throw new TestException({
         message: `${this.value} is not primitive type`,
         code: 1032,
@@ -328,7 +341,7 @@ class Expect {
   notToBePrimitive() {
     this._expected = true;
 
-    if (base.isPrimitive(this.value)) {
+    if (isPrimitive(this.value)) {
       throw new TestException({
         message: `${this.value} is primitive type`,
         code: 1052,
@@ -341,7 +354,7 @@ class Expect {
   toBeEmpty() {
     this._expected = true;
 
-    if (!base.isEmpty(this.value)) {
+    if (!isEmpty(this.value)) {
       throw new TestException({
         message: `${this.value} is not empty`,
         code: 1033,
@@ -354,7 +367,7 @@ class Expect {
   notToBeEmpty() {
     this._expected = true;
 
-    if (base.isEmpty(this.value)) {
+    if (isEmpty(this.value)) {
       throw new TestException({
         message: `${this.value} is empty`,
         code: 1053,
@@ -367,7 +380,7 @@ class Expect {
   toBeObject() {
     this._expected = true;
 
-    if (!base.isObject(this.value)) {
+    if (!isObject(this.value)) {
       throw new TestException({
         message: `${this.value} is not object`,
         code: 1034,
@@ -380,7 +393,7 @@ class Expect {
   notToBeObject() {
     this._expected = true;
 
-    if (base.isObject(this.value)) {
+    if (isObject(this.value)) {
       throw new TestException({
         message: `${this.value} is object`,
         code: 1054,
@@ -393,7 +406,7 @@ class Expect {
   toBeSomeObject() {
     this._expected = true;
 
-    if (!base.isSomeObject(this.value)) {
+    if (!isSomeObject(this.value)) {
       throw new TestException({
         message: `${this.value} is not some object`,
         code: 1035,
@@ -406,7 +419,7 @@ class Expect {
   notToBeSomeObject() {
     this._expected = true;
 
-    if (base.isSomeObject(this.value)) {
+    if (isSomeObject(this.value)) {
       throw new TestException({
         message: `${this.value} is some object`,
         code: 1055,
@@ -419,7 +432,7 @@ class Expect {
   toBeFunction() {
     this._expected = true;
 
-    if (!base.isFunction(this.value)) {
+    if (!isFunction(this.value)) {
       throw new TestException({
         message: `${this.value} is not function`,
         code: 1036,
@@ -432,7 +445,7 @@ class Expect {
   notToBeFunction() {
     this._expected = true;
 
-    if (base.isFunction(this.value)) {
+    if (isFunction(this.value)) {
       throw new TestException({
         message: `${this.value} is function`,
         code: 1056,
@@ -445,7 +458,7 @@ class Expect {
   toBeNumeric() {
     this._expected = true;
 
-    if (!base.isNumeric(this.value)) {
+    if (!isNumeric(this.value)) {
       throw new TestException({
         message: `${this.value} is not numeric`,
         code: 1037,
@@ -458,7 +471,7 @@ class Expect {
   notToBeNumeric() {
     this._expected = true;
 
-    if (base.isNumeric(this.value)) {
+    if (isNumeric(this.value)) {
       throw new TestException({
         message: `${this.value} is numeric`,
         code: 1057,
@@ -471,7 +484,7 @@ class Expect {
   toBeArray() {
     this._expected = true;
 
-    if (!base.isArray(this.value)) {
+    if (!isArray(this.value)) {
       throw new TestException({
         message: `${this.value} is not array`,
         code: 1038,
@@ -484,7 +497,7 @@ class Expect {
   notToBeArray() {
     this._expected = true;
 
-    if (base.isArray(this.value)) {
+    if (isArray(this.value)) {
       throw new TestException({
         message: `${this.value} is array`,
         code: 1058,
@@ -497,7 +510,7 @@ class Expect {
   toBeSomeArray() {
     this._expected = true;
 
-    if (!base.isSomeArray(this.value)) {
+    if (!isSomeArray(this.value)) {
       throw new TestException({
         message: `${this.value} is not some array`,
         code: 1039,
@@ -510,7 +523,7 @@ class Expect {
   notToBeSomeArray() {
     this._expected = true;
 
-    if (!base.isArray(this.value)) {
+    if (!isArray(this.value)) {
       throw new TestException({
         message: `${this.value} is not array`,
         code: 1068,
@@ -530,7 +543,7 @@ class Expect {
   toBeIterable() {
     this._expected = true;
 
-    if (!base.isIterable(this.value)) {
+    if (!isIterable(this.value)) {
       throw new TestException({
         message: `${this.value} is not iterable`,
         code: 1040,
@@ -543,7 +556,7 @@ class Expect {
   notToBeIterable() {
     this._expected = true;
 
-    if (base.isIterable(this.value)) {
+    if (isIterable(this.value)) {
       throw new TestException({
         message: `${this.value} is iterable`,
         code: 1060,
@@ -556,7 +569,7 @@ class Expect {
   toBeSubClassOf(type) {
     this._expected = true;
 
-    if (!base.isSubClassOf(this.value, type)) {
+    if (!isSubClassOf(this.value, type)) {
       throw new TestException({
         message: `${this.value} is not subclass of ${type}`,
         code: 1041,
@@ -569,7 +582,7 @@ class Expect {
   notToBeSubClassOf(type) {
     this._expected = true;
 
-    if (base.isSubClassOf(this.value, type)) {
+    if (isSubClassOf(this.value, type)) {
       throw new TestException({
         message: `${this.value} is subclass of ${type}`,
         code: 1061,
@@ -731,7 +744,8 @@ class Expect {
   toBeNullOrUndefined() {
     this._expected = true;
 
-    if (this.value == null) ; else {
+    if (this.value == null) {
+    } else {
       throw new TestException({
         message: `value is not null/undefined`,
         code: 1010,
@@ -757,7 +771,7 @@ class Expect {
   toBeEmptyArray() {
     this._expected = true;
 
-    if (base.isSomeArray(this.value)) {
+    if (isSomeArray(this.value)) {
       throw new TestException({
         message: `${this.value} is some array`,
         code: 1059,
@@ -770,7 +784,7 @@ class Expect {
   toBeValid(fnValidation) {
     this._expected = true;
 
-    if (!base.isFunction(fnValidation)) {
+    if (!isFunction(fnValidation)) {
       throw new TestException({
         message: `fnValidation is not function`,
         code: 1064,
@@ -790,7 +804,7 @@ class Expect {
   notToBeValid(fnValidation) {
     this._expected = true;
 
-    if (!base.isFunction(fnValidation)) {
+    if (!isFunction(fnValidation)) {
       throw new TestException({
         message: `fnValidation is not function`,
         code: 1066,
@@ -810,7 +824,7 @@ class Expect {
   toThrow(ex, shape = false, strict = false) {
     this._expected = true;
 
-    if (!base.isFunction(this.value)) {
+    if (!isFunction(this.value)) {
       throw new TestException({
         message: `given argument is not a function.`,
         code: 1012,
@@ -826,7 +840,7 @@ class Expect {
       ok = true;
     } catch (e) {
       if (ex !== undefined) {
-        if (base.isPrimitive(ex)) {
+        if (isPrimitive(ex)) {
           if (e !== ex) {
             throw new TestException({
               message: `given function threw incorrect error.`,
@@ -834,7 +848,7 @@ class Expect {
               status: "incorrect-throw-error",
             });
           }
-        } else if (base.isFunction(ex)) {
+        } else if (isFunction(ex)) {
           if (!(e instanceof ex)) {
             throw new TestException({
               message: `given function threw incorrect instance.`,
@@ -842,9 +856,9 @@ class Expect {
               status: "incorrect-throw-instance",
             });
           }
-        } else if (base.isObject(ex)) {
+        } else if (isObject(ex)) {
           if (shape) {
-            if (!base.equals(e, ex, strict)) {
+            if (!equals(e, ex, strict)) {
               throw new TestException({
                 message: `given function threw incorrect object shape.`,
                 code: 1020,
@@ -887,7 +901,7 @@ class Expect {
   notToThrow(ex, shape = false, strict = false) {
     this._expected = true;
 
-    if (!base.isFunction(this.value)) {
+    if (!isFunction(this.value)) {
       throw new TestException({
         message: `given argument is not a function.`,
         code: 1012,
@@ -906,7 +920,7 @@ class Expect {
       error = e;
 
       if (ex !== undefined) {
-        if (base.isPrimitive(ex)) {
+        if (isPrimitive(ex)) {
           if (e === ex) {
             throw new TestException({
               message: `given function threw incorrect error.`,
@@ -914,7 +928,7 @@ class Expect {
               status: "incorrect-throw-error",
             });
           }
-        } else if (base.isFunction(ex)) {
+        } else if (isFunction(ex)) {
           if (e instanceof ex) {
             throw new TestException({
               message: `given function threw incorrect instance.`,
@@ -922,9 +936,9 @@ class Expect {
               status: "incorrect-throw-instance",
             });
           }
-        } else if (base.isObject(ex)) {
+        } else if (isObject(ex)) {
           if (shape) {
-            if (base.equals(e, ex, strict)) {
+            if (equals(e, ex, strict)) {
               throw new TestException({
                 message: `given function threw incorrect object shape.`,
                 code: 1020,
@@ -968,7 +982,7 @@ class Expect {
   async toThrowAsync(ex, shape = false, strict = false) {
     this._expected = true;
 
-    if (!base.isFunction(this.value)) {
+    if (!isFunction(this.value)) {
       throw new TestException({
         message: `given argument is not a function.`,
         code: 1012,
@@ -984,7 +998,7 @@ class Expect {
       ok = true;
     } catch (e) {
       if (ex !== undefined) {
-        if (base.isPrimitive(ex)) {
+        if (isPrimitive(ex)) {
           if (e !== ex) {
             throw new TestException({
               message: `given function threw incorrect error.`,
@@ -992,7 +1006,7 @@ class Expect {
               status: "incorrect-throw-error",
             });
           }
-        } else if (base.isFunction(ex)) {
+        } else if (isFunction(ex)) {
           if (!(e instanceof ex)) {
             throw new TestException({
               message: `given function threw incorrect instance.`,
@@ -1000,9 +1014,9 @@ class Expect {
               status: "incorrect-throw-instance",
             });
           }
-        } else if (base.isObject(ex)) {
+        } else if (isObject(ex)) {
           if (shape) {
-            if (!base.equals(e, ex, strict)) {
+            if (!equals(e, ex, strict)) {
               throw new TestException({
                 message: `given function threw incorrect object shape.`,
                 code: 1020,
@@ -1045,7 +1059,7 @@ class Expect {
   async notToThrowAsync(ex, shape = false, strict = false) {
     this._expected = true;
 
-    if (!base.isFunction(this.value)) {
+    if (!isFunction(this.value)) {
       throw new TestException({
         message: `given argument is not a function.`,
         code: 1012,
@@ -1064,7 +1078,7 @@ class Expect {
       error = e;
 
       if (ex !== undefined) {
-        if (base.isPrimitive(ex)) {
+        if (isPrimitive(ex)) {
           if (e === ex) {
             throw new TestException({
               message: `given function threw incorrect error.`,
@@ -1072,7 +1086,7 @@ class Expect {
               status: "incorrect-throw-error",
             });
           }
-        } else if (base.isFunction(ex)) {
+        } else if (isFunction(ex)) {
           if (e instanceof ex) {
             throw new TestException({
               message: `given function threw incorrect instance.`,
@@ -1080,9 +1094,9 @@ class Expect {
               status: "incorrect-throw-instance",
             });
           }
-        } else if (base.isObject(ex)) {
+        } else if (isObject(ex)) {
           if (shape) {
-            if (base.equals(e, ex, strict)) {
+            if (equals(e, ex, strict)) {
               throw new TestException({
                 message: `given function threw incorrect object shape.`,
                 code: 1020,
@@ -1126,7 +1140,8 @@ class Expect {
   toBeTruthy() {
     this._expected = true;
 
-    if (this.value) ; else {
+    if (this.value) {
+    } else {
       throw new TestException({
         message: `${this.value} is not truthy`,
         code: 1015,
@@ -1142,7 +1157,8 @@ class Expect {
   toBeFalsy() {
     this._expected = true;
 
-    if (!this.value) ; else {
+    if (!this.value) {
+    } else {
       throw new TestException({
         message: `${this.value} is not falsy`,
         code: 1016,
@@ -1158,7 +1174,8 @@ class Expect {
   toBeNaN() {
     this._expected = true;
 
-    if (isNaN(this.value)) ; else {
+    if (isNaN(this.value)) {
+    } else {
       throw new TestException({
         message: `${this.value} is not NaN`,
         code: 1017,
@@ -1171,7 +1188,8 @@ class Expect {
   notToBeNaN() {
     this._expected = true;
 
-    if (!isNaN(this.value)) ; else {
+    if (!isNaN(this.value)) {
+    } else {
       throw new TestException({
         message: `${this.value} is NaN`,
         code: 1023,
@@ -1183,389 +1201,4 @@ class Expect {
   }
 }
 
-class Test {
-  constructor(name, fn) {
-    this.name = name;
-    this.fn = fn;
-  }
-  run() {
-    return new Promise((res) => {
-      const start = new Date();
-
-      if (base.isFunction(this.fn)) {
-        const _expect = new Expect();
-
-        try {
-          const _result = this.fn((x) => {
-            _expect.value = x;
-
-            return _expect;
-          });
-
-          if (_result && base.isFunction(_result.then)) {
-            _result
-              .then((result) => {
-                res({
-                  success: true,
-                  test: this.name,
-                  result,
-                  time: new Date() - start,
-                  expected: _expect.expected,
-                });
-              })
-              .catch((ex) => {
-                res({
-                  success: false,
-                  test: this.name,
-                  time: new Date() - start,
-                  expected: _expect.expected,
-                  err: new TestException({
-                    message: `test '${this.name}' failed.`,
-                    code: 501,
-                    status: "failed",
-                    innerException: ex,
-                  }),
-                });
-              });
-          } else {
-            res({
-              success: true,
-              test: this.name,
-              time: new Date() - start,
-              result: _result,
-              expected: _expect.expected,
-            });
-          }
-        } catch (ex) {
-          res({
-            success: false,
-            test: this.name,
-            time: new Date() - start,
-            expected: _expect.expected,
-            err: new TestException({
-              message: `test '${this.name}' failed.`,
-              code: 501,
-              status: "failed",
-              innerException: ex,
-            }),
-          });
-        }
-      } else {
-        res({
-          success: false,
-          test: this.name,
-          time: new Date() - start,
-          err: new TestException({
-            message: `test '${this.name}' does not have a function to be called.`,
-            code: 500,
-            status: "no-func",
-          }),
-        });
-      }
-    });
-  }
-}
-
-const reset = "\x1b[0m";
-const bright = "\x1b[1m";
-const fgRed = "\x1b[31m";
-const fgGreen = "\x1b[32m";
-const fgYellow = "\x1b[33m";
-const fgMagenta = "\x1b[35m";
-const fgWhite = "\x1b[37m";
-const fgGray = "\x1b[90m";
-
-class TestRunner {
-  constructor() {
-    this._init();
-  }
-  _init() {
-    this._passed = 0;
-    this._failed = 0;
-    this._faulted = 0;
-    this._unknown = 0;
-    this._results = [];
-    this._errors = [];
-  }
-  async _runSingle(test, onProgress, i) {
-    if (base.isFunction(onProgress)) {
-      try {
-        onProgress({ source: this, test, index: i });
-      } catch (ex) {
-        this._errors.push({
-          index: i,
-          test: test.name,
-          err: new TestException({
-            message: `onProgress failed for test '${test.name} at index ${i}'.`,
-            code: 1500,
-            status: "progress-failed",
-            innerException: ex,
-          }),
-        });
-      }
-    }
-    if (!(test instanceof Test)) {
-      this._unknown++;
-
-      this._errors.push({
-        index: i,
-        err: new TestException({
-          message: `Given test is not an instance of '@locustjs/test:Test' class.`,
-          code: 1504,
-          status: "invalid-test",
-        }),
-      });
-    } else {
-      const tr = await test.run();
-      this._results.push(tr);
-
-      if (base.isObject(tr.err)) {
-        if (!tr.expected) {
-          this._faulted++;
-        } else {
-          this._failed++;
-        }
-      } else if (!tr.expected) {
-        this._unknown++;
-      } else if (tr.success) {
-        this._passed++;
-      } else {
-        this._failed++;
-      }
-    }
-  }
-  get result() {
-    return {
-      passed: this._passed,
-      failed: this._failed,
-      faulted: this._faulted,
-      results: this._results,
-      errors: this._errors,
-    };
-  }
-  run(tests, onProgress) {
-    this._init();
-
-    return new Promise((res) => {
-      if (tests) {
-        if (tests instanceof Test) {
-          tests = [tests];
-        }
-
-        if (base.isArray(tests)) {
-          const _tests = tests
-            .map((test) => {
-              let _test = test;
-
-              if (base.isArray(test)) {
-                if (test.length == 2) {
-                  _test = new Test(test[0], test[1]);
-                }
-              }
-
-              return _test;
-            })
-            .map((test, i) => this._runSingle(test, onProgress, i));
-
-          Promise.all(_tests)
-            .then((_) => res(this.result))
-            .catch((ex) => {
-              this._errors.push({
-                err: new TestException({
-                  message: `not all tests succeeded. check errors.`,
-                  code: 1503,
-                  status: "partial-finished",
-                  innerException: ex,
-                }),
-              });
-
-              res(this.result);
-            });
-        } else {
-          this._errors.push({
-            err: new TestException({
-              message: `invalid tests. expected array or a single test.`,
-              code: 1502,
-              status: "invalid-tests",
-            }),
-          });
-
-          res(this.result);
-        }
-      } else {
-        this._errors.push({
-          err: new TestException({
-            message: `no tests given to be ran.`,
-            code: 1501,
-            status: "no-tests",
-          }),
-        });
-
-        res(this.result);
-      }
-    });
-  }
-  _getTime(time) {
-    return `${time / 1000} sec`;
-  }
-  report(detailed) {
-    let time = 0;
-
-    console.log("Finished.\n");
-
-    for (let i = 0; i < this._results.length; i++) {
-      const testResult = this._results[i];
-      const t = `(${this._getTime(testResult.time)})`;
-
-      if (detailed) {
-        let message = "\n" + (i + 1) + ". ";
-        let err = base.isObject(testResult.err)
-          ? testResult.err.toString().split("\n")
-          : [];
-
-        err = err
-          .map(
-            (msg, i) =>
-              `\t${
-                i == err.length - 1
-                  ? `${fgYellow}`
-                  : `${fgGray}error ${testResult.err.code}: `
-              }${msg}${reset}`
-          )
-          .join("\n");
-
-        if (base.isObject(testResult.err)) {
-          if (!testResult.expected) {
-            message += `${bright}${fgWhite}${testResult.test}: ${fgYellow}faulted${reset} ${t}`;
-            message += "\n";
-            message += `${fgGray}${err} ${reset}`;
-          } else {
-            message += `${bright}${fgWhite}${testResult.test}: ${fgRed}failed${reset} ${t}`;
-            message += "\n";
-            message += `${fgGray}${err} ${reset}`;
-          }
-        } else if (!testResult.expected) {
-          message += `${bright}${fgWhite}${testResult.test}: ${fgMagenta}expect not used${reset} ${t}`;
-
-          if (testResult.err) {
-            message += "\n";
-            message += `${fgGray}${err} ${reset}`;
-          }
-        } else if (testResult.success) {
-          message += `${fgWhite}${testResult.test}: ${fgGreen}passed${reset} ${t}`;
-        } else {
-          message += `${bright}${fgWhite}${testResult.test}: ${fgRed}failed${reset} ${t}`;
-          message += "\n";
-          message += `${fgGray}${err} ${reset}`;
-        }
-
-        console.log(message);
-      }
-
-      time += testResult.time;
-    }
-
-    if (detailed && this._errors.length) {
-      console.log("Errors:");
-
-      for (let error of this._errors) {
-        if (error.index !== undefined) {
-          console.log(
-            `${error.index}. ${
-              error.test
-            }: ${error.err.innerException.toString()}`
-          );
-        } else {
-          console.log(`${error.err.toString()}`);
-        }
-      }
-    }
-
-    const text =
-      (detailed ? "\n" : "") +
-      `${bright}Number of tests: ${reset}${this._results.length}` +
-      "\n" +
-      `${bright}Total Time: ${reset}${time / 1000} sec` +
-      "\n\n" +
-      (this._passed > 0
-        ? `${fgGreen} ${this._passed} test(s) passed${reset}`
-        : `0 tests passed${reset}`) +
-      ", " +
-      (this._failed > 0
-        ? `${fgRed}${this._failed} test(s) failed${reset}`
-        : `0 tests failed${reset}`) +
-      (this._faulted > 0
-        ? `, ${fgYellow}${this._faulted} test(s) faulted${reset}`
-        : ``) +
-      (this._unknown > 0
-        ? `, ${fgMagenta}${this._unknown} test(s) are unknown${reset}`
-        : ``) +
-      "\n";
-
-    console.log(text);
-  }
-  log(filename) {
-    const content = JSON.stringify(
-      {
-        results: this._results,
-        errors: this._errors,
-      },
-      null,
-      "\t"
-    );
-
-    if (filename == null) {
-      const d = new Date();
-
-      const year = d.getFullYear().toString().padStart(4, "0");
-      const month = (d.getMonth() + 1).toString().padStart(2, "0");
-      const day = d.getDate().toString().padStart(2, "0");
-      const hours = d.getHours().toString().padStart(2, "0");
-      const minutes = d.getMinutes().toString().padStart(2, "0");
-      const seconds = d.getSeconds().toString().padStart(2, "0");
-
-      filename = `test-${year}-${month}-${day}-${hours}${minutes}${seconds}.json`;
-    }
-
-    const filepath = path.join(process.cwd(), filename);
-
-    try {
-      fs.writeFileSync(filepath, content);
-
-      console.log(`tests outcome wrote in ${filename}.`);
-    } catch (ex) {
-      console.log("writing tests' report failed.\n" + ex);
-    }
-  }
-  async test(...tests) {
-    const lastArg = tests[tests.length - 1];
-    const detailed = tests.length && base.isBool(lastArg) ? lastArg : false;
-    let _tests = [];
-
-    for (let i = 0; i < tests.length; i++) {
-      const t = tests[i];
-
-      if (i != tests.length - 1 || !base.isBool(t)) {
-        if (base.isIterable(t)) {
-          _tests = [..._tests, ...t];
-        }
-      }
-    }
-
-    const result = await this.run(_tests);
-
-    this.report(detailed || result.failed > 0);
-
-    return { runner: this, result };
-  }
-  static start(...tests) {
-    const tr = new TestRunner();
-
-    return tr.test(...tests);
-  }
-}
-
-exports.Expect = Expect;
-exports.Test = Test;
-exports.TestException = TestException;
-exports.TestRunner = TestRunner;
+export default Expect;

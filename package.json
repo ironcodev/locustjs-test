@@ -1,11 +1,11 @@
 {
   "name": "@locustjs/test",
-  "version": "1.6.4",
-  "description": "This library provides a simple test runner.",
+  "version": "2.0.0",
+  "description": "This library provides a simple test runner for unit-testing.",
   "main": "dist/index.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "babel ./src/index.js -o ./dist/index.js",
+    "build": "rollup -c",
     "test": "node -r esm ./tests/index.js"
   },
   "repository": {
@@ -27,13 +27,11 @@
   },
   "homepage": "https://github.com/ironcodev/locustjs-test#readme",
   "dependencies": {
-    "@babel/preset-env": "^7.24.7",
     "@locustjs/base": "^4.0.0",
     "@locustjs/exception": "^2.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.6",
-    "@babel/core": "^7.22.8",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "rollup": "^4.29.1"
   }
 }

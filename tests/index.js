@@ -1,4 +1,4 @@
-import TestRunner from "../src";
+import { TestRunner } from "../src";
 
 class Foo {}
 class Bar extends Foo {}
