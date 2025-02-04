@@ -92,10 +92,10 @@ const tests = [
     function (expect) {
       const x = 30;
 
-      expect(x).toBeGreaterThan(20);
+      expect(x).toBe(20);
     },
   ],
-  ["Test 8: not expected", function (expect) {}],
+  ["Test 8: expect not used", function (expect) {}],
   [
     "Test 9: error without expect",
     function (expect) {
@@ -118,4 +118,4 @@ const tests = [
   ],
 ];
 
-TestRunner.start(tests);
+TestRunner.start(tests, true);
